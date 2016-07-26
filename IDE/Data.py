@@ -12,3 +12,7 @@ class Data:
 
     temps = [] #Holds the temperature at each sample time
     times = [] #Time each sample was taken at (Local time)
+    fileType = "txt"
+
+    def setFile(self, ext):
+        fileType = ext
