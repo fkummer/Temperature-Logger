@@ -17,3 +17,4 @@ class Settings:
 
     def upload(self):
         """Uploads settings to the sensor"""
+        print("Settings Uploaded")

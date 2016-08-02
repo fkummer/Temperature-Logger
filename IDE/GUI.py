@@ -19,11 +19,11 @@ TODO:
         Entry duration
         (File extension?)
     Checkboxes
-        Type of file (txt or csv)
+        Type of file (txt and/or csv)
         Graphs
         Min/Max/Average (Could be included on graph)
 
-    Change how GUI handles different filetypes. Current method is messy and makes it difficult to add new filetypes.
+
 
 """
 
@@ -34,7 +34,8 @@ import Settings
 class SensorGui(tk.Frame):
     sensorData = Data.Data()
     sensorSettings = Settings.Settings()
-    fileType = "txt"
+    fileType = 0
+    fileTypes = ("txt","csv") #tuples that holds all the different file types
 
     def __init__(self, parent):
         """Intialize all elements of the GUI"""
@@ -42,8 +43,8 @@ class SensorGui(tk.Frame):
         self.uploadButton = tk.Button(self, text = "Upload settings", command=self.uploadSettings)
         self.downloadButton = tk.Button(self, text = "Download data", command=self.downloadData)
 
-        setTxt = lambda: self.setFile("txt")
-        setCsv = lambda: self.setFile("csv")
+        setTxt = lambda: self.setFile(0)
+        setCsv = lambda: self.setFile(1)
         self.txtFile = tk.Checkbutton(self, text="txt", command=setTxt)
         self.txtFile.select() #Select txt as default
         self.csvFile = tk.Checkbutton(self, text="csv", command=setCsv)
@@ -58,20 +59,18 @@ class SensorGui(tk.Frame):
 
     def setFile(self,type):
         """Sets the type of file to be downloaded"""
-        if (self.fileType != type):
-            print("Filetype switched to " + type)
-            self.fileType = type
-        else:
-            if(type == "txt"):
-                print("Filetype switched to csv")
-                self.fileType = "csv"
-            elif(type == "csv"):
-                print("Filetype switched to txt")
-                self.fileType = "txt"
-        if(type == "txt"):
+        self.sensorData.setFile(self.fileTypes[type])
+        self.fileType = type
+        if(type == 0):
             self.csvFile.toggle()
-        elif(type == "csv"):
+        elif(type == 1):
             self.txtFile.toggle()
+        self.sensorData.setFile(self.fileTypes[type])
+        self.fileType = type
+        print(self.sensorData.fileType) #For debugging
+
+    def toggleFileType(self,type):
+        """Toggles the selected filetype based on """
 
 
     def uploadSettings(self):
